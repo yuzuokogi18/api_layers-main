@@ -13,3 +13,4 @@ noticiaRoutes.get("/:id", noticiaController.getById.bind(noticiaController));
 noticiaRoutes.post("/", noticiaController.create.bind(noticiaController));
 noticiaRoutes.put("/:id", noticiaController.update.bind(noticiaController));
 noticiaRoutes.delete("/:id", noticiaController.delete.bind(noticiaController));
+noticiaRoutes.get("/search", noticiaController.search.bind(noticiaController)); // Ruta para búsqueda

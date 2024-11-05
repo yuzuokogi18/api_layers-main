@@ -31,7 +31,7 @@ export class NoticiaRepository {
                 rows[0].titulo,
                 rows[0].descripcion_breve,
                 rows[0].contenido,
-                rows[0].categoria,
+                rows[0].categoria_id,
                 rows[0].fecha_publicacion,
                 rows[0].origen,
                 rows[0].autor,
@@ -42,17 +42,23 @@ export class NoticiaRepository {
     }
 
     async createNoticia(data: any): Promise<Noticia | null> {
-        const [result]: any = await this.connection.execute('INSERT INTO noticia (titulo, descripcion_breve, contenido, categoria, fecha_publicacion, origen, autor, fuente_publicacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [data.titulo, data.descripcion_breve, data.contenido, data.categoria, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion]);
-        return new Noticia(result.insertId, data.titulo, data.descripcion_breve, data.contenido, data.categoria, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion);
+        const [result]: any = await this.connection.execute('INSERT INTO noticia (titulo, descripcion_breve, contenido, categoria_id, fecha_publicacion, origen, autor, fuente_publicacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [data.titulo, data.descripcion_breve, data.contenido, data.categoria_id, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion]);
+        return new Noticia(result.insertId, data.titulo, data.descripcion_breve, data.contenido, data.categoria_id, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion);
     }
 
     async updateNoticia(id: number, data: any): Promise<Noticia | null> {
-        await this.connection.execute('UPDATE noticia SET titulo=?, descripcion_breve=?, contenido=?, categoria=?, fecha_publicacion=?, origen=?, autor=?, fuente_publicacion=? WHERE id=?', [data.titulo, data.descripcion_breve, data.contenido, data.categoria, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion, id]);
-        return new Noticia(id, data.titulo, data.descripcion_breve, data.contenido, data.categoria, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion);
+        await this.connection.execute('UPDATE noticia SET titulo=?, descripcion_breve=?, contenido=?, categoria_id=?, fecha_publicacion=?, origen=?, autor=?, fuente_publicacion=? WHERE id=?', [data.titulo, data.descripcion_breve, data.contenido, data.categoria_id, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion, id]);
+        return new Noticia(id, data.titulo, data.descripcion_breve, data.contenido, data.categoria_id, data.fecha_publicacion, data.origen, data.autor, data.fuente_publicacion);
     }
 
     async deleteNoticia(id: number): Promise<boolean> {
         const [result]: any = await this.connection.execute('DELETE FROM noticia WHERE id=?', [id]);
         return result.affectedRows > 0;
+    }
+
+    // Nuevo método para buscar noticias por título
+    async searchNoticiasByTitle(titulo: string): Promise<Noticia[] | null> {
+        const [rows]: any = await this.connection.execute('SELECT * FROM noticia WHERE titulo LIKE ?', [`%${titulo}%`]);
+        return rows as Noticia[];
     }
 }

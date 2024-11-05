@@ -23,4 +23,9 @@ export class NoticiaService {
     async deleteNoticia(id: number): Promise<boolean> {
         return this.noticiaRepositorio.deleteNoticia(id);
     }
+
+    // Nuevo método para buscar noticias
+    async searchNoticias(titulo: string): Promise<Noticia[] | null> {
+        return this.noticiaRepositorio.searchNoticiasByTitle(titulo);
+    }
 }

@@ -33,4 +33,19 @@ export class NoticiaController {
         const isDeleted = await this.noticiaService.deleteNoticia(id);
         res.status(200).send({ status: 'OK', data: isDeleted });
     }
+
+    // Nuevo método para buscar noticias por título
+    async search(req: Request, res: Response) {
+        const titulo = req.query.titulo as string; // Obtiene el título de la consulta
+        try {
+            if (!titulo) {
+                return res.status(400).send({ status: false, message: 'Se requiere un título para la búsqueda.' });
+            }
+            const noticias = await this.noticiaService.searchNoticias(titulo);
+            return res.status(200).send({ status: true, data: noticias });
+        } catch (error: any) { // Especificar el tipo como 'any'
+            return res.status(500).send({ status: false, message: error.message });
+        }
+    }
+    
 }
