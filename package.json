@@ -6,7 +6,8 @@
   "scripts": {
     "start:dev": "tsnd --respawn src/index.ts",
     "start": "tsc && node dist/index.js",
-    "sonar": "sonar-scanner"
+    "sonar": "sonar-scanner",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
